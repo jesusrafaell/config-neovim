@@ -16,7 +16,7 @@ set cursorline
 set sw =2
 set ts=4
 set noshowmode
-set guifont=Consolas:h11
+set guifont=Hack:h10
 
 
 "songs OFF
@@ -85,8 +85,10 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 call plug#end()
 
 "theme select
-let g:gruvbox_contrast_dark = "hard"
-colorscheme gruvbox
+"let g:gruvbox_contrast_dark = "hard"
+"colorscheme gruvbox
+colorscheme grb256 
+"colorscheme candy 
 "colorscheme vim-material
 "let g:airline_theme='material'
 
