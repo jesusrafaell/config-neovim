@@ -16,6 +16,7 @@ set cursorline
 set sw =2
 set ts=4
 set noshowmode
+"need install hack font
 set guifont=Hack:h10
 
 
