@@ -11,14 +11,11 @@ set numberwidth=1
 syntax enable
 set showcmd
 set ruler
-set showmatch
 set cursorline
 set sw =2
 set ts=4
 set noshowmode
-"need install hack font
-set guifont=Hack:h10
-
+set guifont=Consolas:h11:cANSI:qDRAFT
 
 "songs OFF
 set noerrorbells visualbell t_vb=
@@ -27,9 +24,15 @@ autocmd GUIEnter * set visualbell t_vb=
 set laststatus=2
 set guioptions-=m  "remove menu bar
 set guioptions-=T
-set guioptions-=r 
-set guioptions-=l 
+set guioptions-=r
+set guioptions-=l
 set guioptions-=L
+
+"Console vim with powerShell
+set shell=powershell 
+set shellcmdflag=-c
+set shellquote=\"
+set shellxquote=
 
 map <Space> <Leader>
 le mapleader= "<Space>"
@@ -52,7 +55,9 @@ let g:netrw_winsize = 25
 call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdtree'
 Plug 'junegunn/vim-easy-align'
-" JavaScript 
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" JavaScript
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -64,15 +69,15 @@ Plug 'jparise/vim-graphql'
 
 Plug 'mattn/emmet-vim'
 Plug 'honza/vim-snippets'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'ycm-core/YouCompleteMe'
+Plug 'ervandew/supertab'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'jiangmiao/auto-pairs'
 
 "Theme
-Plug 'hzchirs/vim-material'
-Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'quanganhdo/grb256'
 
 "IDE
 Plug 'easymotion/vim-easymotion'
@@ -86,12 +91,12 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 call plug#end()
 
 "theme select
-"let g:gruvbox_contrast_dark = "hard"
-"colorscheme gruvbox
-colorscheme grb256 
-"colorscheme candy 
-"colorscheme vim-material
-"let g:airline_theme='material'
+set background=dark
+colorscheme grb256
+
+"emgergent windows
+hi Pmenu ctermfg=NONE ctermbg=236 cterm=NONE guifg=black guibg=#cad1d3 gui=NONE
+hi PmenuSel ctermfg=NONE ctermbg=24 cterm=NONE guifg=black guibg=#7ea7d4 gui=NONE
 
 
 " Keymaps
@@ -123,45 +128,20 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-
 "UltiSnips with YCM
-function! g:UltiSnips_Complete()
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips#JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
-endfunction
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
-function! g:UltiSnips_Reverse()
-  call UltiSnips#JumpBackwards()
-  if g:ulti_jump_backwards_res == 0
-    return "\<C-P>"
-  endif
-
-  return ""
-endfunction
-
-if !exists("g:UltiSnipsJumpForwardTrigger")
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-endif
-
-if !exists("g:UltiSnipsJumpBackwardTrigger")
-  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-endif
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
-
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 "Underline in vim
-hi clear CursorLine 
+hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
 
+"Mode visual color
+hi Visual  guifg=#000000 guibg=#FFFFFF gui=none
