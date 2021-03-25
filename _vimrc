@@ -1,3 +1,4 @@
+"Neovim
 syntax on
 " Show number for line
 set number relativenumber
@@ -13,8 +14,12 @@ set cursorline
 set sw =2
 set ts=4
 set noshowmode
-set guifont=Consolas:h11:cANSI:qDRAFT
 set signcolumn=no
+
+"not create swap
+set nobackup
+set nowritebackup 
+set noswapfile
 
 " songs OFF
 set noerrorbells visualbell t_vb=
@@ -29,21 +34,17 @@ set guioptions-=L
 
 
 " Plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Tree
 Plug 'preservim/nerdtree'
 
 " Autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'ycm-core/YouCompleteMe'
-
-" tmux
-"Plug 'preservim/vimux'
-Plug 'christoomey/vim-tmux-navigator'
 
 " TypeScript
 Plug 'pangloss/vim-javascript'
+Plug 'yuezk/vim-js'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'honza/vim-snippets'
@@ -58,11 +59,13 @@ Plug 'mattn/emmet-vim'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 
+" tmux
+"Plug 'preservim/vimux'
+Plug 'christoomey/vim-tmux-navigator'
+
 " Status bar
 Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim/'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
 
 " Theme
 Plug 'morhetz/gruvbox'
@@ -71,6 +74,8 @@ Plug 'quanganhdo/grb256'
 "IDE
 Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 " Prettier
 Plug 'junegunn/vim-easy-align'
@@ -81,8 +86,9 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 call plug#end()
 
 " Theme select
-set background=dark
-colorscheme grb256
+"set background=dark
+"colorscheme grb256
+colorscheme gruvbox
 
 " Keymaps /////////////////
 
@@ -90,8 +96,17 @@ colorscheme grb256
 map <Space> <Leader>
 le mapleader= "<Space>"
 
+"Copy in browser
+nnoremap <C-y > "+y
+vnoremap <C-y> "+y
+
+"vim fugitive
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+nnoremap <silent> <C-f> :Files<CR>
+
 " Abrir terminal
 map <F2> :belowright terminal<CR>
+
 " easymotion
 map <Leader>s <Plug>(easymotion-s2)
 
@@ -101,24 +116,20 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use <c-space> to trigger completior
-if &filetype == "javascript" || &filetype == "python"
-  inoremap <c-space> <C-x><C-u>
-else
-  inoremap <silent><expr> <c-space> coc#refresh()
-endif
-
-" NerdTree
+" nerdtree
 nmap <Leader>nt :NERDTreeFind<CR>
-nmap  <F3> :simalt ~x<CR>
-nmap  <F4> :simalt ~r<CR>
 
-map <Leader>h : source $HOME\_vimrc<CR>
+map <Leader>h : source ~/.config/nvim/init.vim<CR>
 map <Leader>f :/
+nnoremap <silent> <leader>n :nohlsearch<CR>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 
-" NERDTree
+"SuperTab navigation up to down
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" NERDTree 
+let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
@@ -143,18 +154,9 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-" UltiSnips with YCM
-" make YCM compatible with UltiSnips (using supertab)
-"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-"let g:SuperTabDefaultCompletionType = '<C-n>'
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
 
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-" lightline
+"" lightline
 let g:lightline = { 
 	  \ 'colorscheme': 'wombat',
 	  \ 'active': {
@@ -167,12 +169,12 @@ let g:lightline = {
 	  \}
 
 " kite
-let g:kite_supported_lenguajes = ['javescript', 'python']
+"let g:kite_supported_languages = ['*']
 
 " coc
-autocmd FileType python let b:coc_suggest_disable = 1
-autocmd FileType javascript let b:coc_suggest_disable = 1
-autocmd FileType scss setl iskeyword+=@-@
+"autocmd FileType python let b:coc_suggest_disable = 1
+"autocmd FileType javascript let b:coc_suggest_disable = 1
+"autocmd FileType scss setl iskeyword+=@-@
 
 " emgergent windows
 hi Pmenu ctermfg=NONE ctermbg=236 cterm=NONE guifg=black guibg=#cad1d3 gui=NONE
