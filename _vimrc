@@ -1,6 +1,6 @@
 "Neovim
 syntax on
-" Show number for line
+" how number for line
 set number relativenumber
 set clipboard=unnamed
 set mouse=a
@@ -21,6 +21,8 @@ set nobackup
 set nowritebackup 
 set noswapfile
 
+set cmdheight=1
+
 " songs OFF
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
@@ -32,52 +34,61 @@ set guioptions-=r
 set guioptions-=l
 set guioptions-=L
 
+" fugitive always vertical diffing
+set diffopt+=vertical
 
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
 
-" Tree
+" theme
+Plug 'morhetz/gruvbox'
+Plug 'crusoexia/vim-monokai'
+
+" icons
+Plug 'ryanoasis/vim-devicons'
+
+" tree
 Plug 'preservim/nerdtree'
 
-" Autocomplete
+" autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" TypeScript
-Plug 'pangloss/vim-javascript'
-Plug 'yuezk/vim-js'
-Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'honza/vim-snippets'
-
-" React
-Plug 'mlaursen/vim-react-snippets'
-Plug 'SirVer/ultisnips'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'jparise/vim-graphql'
-
-Plug 'mattn/emmet-vim'
-Plug 'ervandew/supertab'
-Plug 'jiangmiao/auto-pairs'
 
 " tmux
 "Plug 'preservim/vimux'
 Plug 'christoomey/vim-tmux-navigator'
 
-" Status bar
+" typeScript
+"Plug 'HerringtonDarkholme/yats.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'yuezk/vim-js'
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'honza/vim-snippets'
+Plug 'alvan/vim-closetag'
+Plug 'jparise/vim-graphql'
+
+" snippets
+Plug 'mlaursen/vim-react-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+
+
+Plug 'mattn/emmet-vim'
+Plug 'ervandew/supertab'
+Plug 'jiangmiao/auto-pairs'
+
+" status bar
 Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim/'
 
-" Theme
-Plug 'morhetz/gruvbox'
-Plug 'quanganhdo/grb256'
-
-"IDE
+" ide
 Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'yggdroot/indentline'
 
-" Prettier
+" prettier
 Plug 'junegunn/vim-easy-align'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 let g:prettier#autoformat = 0
@@ -85,10 +96,9 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 
 call plug#end()
 
-" Theme select
-"set background=dark
-"colorscheme grb256
-colorscheme gruvbox
+
+" config theme
+colorscheme monokai
 
 " Keymaps /////////////////
 
@@ -100,12 +110,12 @@ le mapleader= "<Space>"
 nnoremap <C-y > "+y
 vnoremap <C-y> "+y
 
-"vim fugitive
-let $FZF_DEFAULT_OPTS='--layout=reverse'
 nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <C-a> :Ag<CR>
+nnoremap <silent> <C-g> :GFiles<CR>
 
 " Abrir terminal
-map <F2> :belowright terminal<CR>
+map <F2> :term<CR>
 
 " easymotion
 map <Leader>s <Plug>(easymotion-s2)
@@ -116,14 +126,22 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+"tabs_navigation
+map <Leader>h :tabprevious<cr>
+map <Leader>l :tabnext<cr>
+
 " nerdtree
 nmap <Leader>nt :NERDTreeFind<CR>
 
-map <Leader>h : source ~/.config/nvim/init.vim<CR>
 map <Leader>f :/
+map <Leader>h : source ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <leader>n :nohlsearch<CR>
+
+" save and quit
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
+
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
 
 "SuperTab navigation up to down
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -135,6 +153,8 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeMapActivateNode = '<space>'
 let g:NERDTreeMapOpenInTab = 'o'
+
+let g:javascript_plugin_flow = 1
 
 " netrw
 let g:netrw_banner = 0
@@ -154,35 +174,39 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
 
-"" lightline
+" HTML, JSX
+let g:closetag_filenames = '*.html,*.js,*.jsx,*.ts,*.tsx'
+
+"vim fugitive
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+
+" lightline
 let g:lightline = { 
-	  \ 'colorscheme': 'wombat',
 	  \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [], ['relativepath', 'modified']],
-      \   'right': [ [ 'kitestatus'], ['filetype', 'percent', 'lineinfo'], ['gitbranch']]
-      \ },
-	  \ 'component_function' : {
-	  \ 'kitestatus': 'kite#statusline'
+      \   'right': [ ['filetype', 'percent', 'lineinfo'], ['gitbranch']]
+      \ }, 
+	  \ 'component_function': {
+      \   'filename': 'LightlineFilename',
 	  \ }
 	  \}
 
-" kite
-"let g:kite_supported_languages = ['*']
-
-" coc
-"autocmd FileType python let b:coc_suggest_disable = 1
-"autocmd FileType javascript let b:coc_suggest_disable = 1
-"autocmd FileType scss setl iskeyword+=@-@
-
 " emgergent windows
-hi Pmenu ctermfg=NONE ctermbg=236 cterm=NONE guifg=black guibg=#cad1d3 gui=NONE
-hi PmenuSel ctermfg=NONE ctermbg=24 cterm=NONE guifg=black guibg=#7ea7d4 gui=NONE
+hi Pmenu ctermbg=darkgrey 
+hi PmenuSel ctermfg=blue ctermbg=white
 
 " Underline in vim
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
 
+"Not change terminal color (background)
+hi Normal ctermbg=NONE
+hi clear LineNr
+hi clear CursorLineNr
+hi LineNr ctermfg=darkgray
+hi CursorLineNr ctermfg=yellow 
+
 " Mode visual color
-hi Visual  guifg=#000000 guibg=#FFFFFF gui=none
+hi clear Visual
+hi Visual ctermbg=darkgray
