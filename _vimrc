@@ -1,4 +1,5 @@
-"Neovim
+
+"NeoVim
 syntax on
 " how number for line
 set number relativenumber
@@ -12,30 +13,27 @@ set showcmd
 set ruler
 set cursorline
 set sw =2
-set ts=4
-set noshowmode
+"set ts=4
 set signcolumn=no
+set pumheight=20 "height for snippets
 
 "not create swap
 set nobackup
 set nowritebackup 
 set noswapfile
 
-set cmdheight=1
+" Searching full
+set hlsearch                    " highlight matches
+set incsearch                   " incremental searching
+set ignorecase                  " searches are case insensitive...
+set smartcase                   " ... unless they contain at least one capital letter
 
 " songs OFF
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
 set laststatus=2
-set guioptions-=m  "remove menu bar
-set guioptions-=T
-set guioptions-=r
-set guioptions-=l
-set guioptions-=L
-
-" fugitive always vertical diffing
-set diffopt+=vertical
+set noshowmode
 
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
@@ -43,62 +41,76 @@ call plug#begin('~/.config/nvim/plugged')
 " theme
 Plug 'morhetz/gruvbox'
 Plug 'crusoexia/vim-monokai'
-
-" icons
-Plug 'ryanoasis/vim-devicons'
-
-" tree
-Plug 'preservim/nerdtree'
-
-" autocomplete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" tmux
-"Plug 'preservim/vimux'
-Plug 'christoomey/vim-tmux-navigator'
-
-" typeScript
-"Plug 'HerringtonDarkholme/yats.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'yuezk/vim-js'
-Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'honza/vim-snippets'
-Plug 'alvan/vim-closetag'
-Plug 'jparise/vim-graphql'
-
-" snippets
-Plug 'mlaursen/vim-react-snippets'
-Plug 'SirVer/ultisnips'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-
-
-Plug 'mattn/emmet-vim'
-Plug 'ervandew/supertab'
-Plug 'jiangmiao/auto-pairs'
-
+Plug 'joshdick/onedark.vim'
+Plug 'altercation/vim-colors-solarized'
 " status bar
 Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim/'
 
+" tree
+Plug 'preservim/nerdtree'
+
+" syntax
+Plug 'sheerun/vim-polyglot'
+" typeScript
+Plug 'jparise/vim-graphql'
+
+" autocomplete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sirver/ultisnips'
+Plug 'mlaursen/vim-react-snippets'
+
+" tmux
+Plug 'benmills/vimux'
+Plug 'christoomey/vim-tmux-navigator'
+
+" typing
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+Plug 'tpope/vim-surround'
+
+Plug 'mattn/emmet-vim'
+Plug 'ervandew/supertab'
+
 " ide
-Plug 'easymotion/vim-easymotion'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-"Plug 'yggdroot/indentline'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'easymotion/vim-easymotion'
+Plug 'yggdroot/indentline'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'scrooloose/nerdcommenter'
+
+"git 
+Plug 'tpope/vim-fugitive'
+
+Plug 'tpope/vim-repeat'
 
 " prettier
-Plug 'junegunn/vim-easy-align'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+"Plug 'junegunn/vim-easy-align'
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 call plug#end()
 
-
 " config theme
-colorscheme monokai
+"colorscheme monokai
+set t_Co=256
+set termguicolors
+colorscheme onedark
+"set background=dark
+"colorscheme solarized
+
+"config plugs
+set hidden
+set cmdheight=1
+set shortmess+=c
+set expandtab
+
+" fugitive always vertical diffing
+set diffopt+=vertical
 
 " Keymaps /////////////////
 
@@ -134,14 +146,13 @@ map <Leader>l :tabnext<cr>
 nmap <Leader>nt :NERDTreeFind<CR>
 
 map <Leader>f :/
-map <Leader>h : source ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <leader>n :nohlsearch<CR>
 
 " save and quit
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
+"inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
 
 "SuperTab navigation up to down
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -152,6 +163,7 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeMapActivateNode = '<space>'
+"let NERDTreeShowLineNumbers=1
 let g:NERDTreeMapOpenInTab = 'o'
 
 let g:javascript_plugin_flow = 1
@@ -174,7 +186,6 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-
 " HTML, JSX
 let g:closetag_filenames = '*.html,*.js,*.jsx,*.ts,*.tsx'
 
@@ -193,20 +204,26 @@ let g:lightline = {
 	  \}
 
 " emgergent windows
-hi Pmenu ctermbg=darkgrey 
+hi Pmenu ctermfg=gray 
 hi PmenuSel ctermfg=blue ctermbg=white
 
-" Underline in vim
-hi clear CursorLine
-hi CursorLine gui=underline cterm=underline
+"indentline
+let g:indent_guides_enable_on_vim_startup=1
+"hi IndentGuidesEven ctermbg=238 guibg=238
+"hi IndentGuidesOdd ctermbg=236 guibg=236
+
+" nerdtree color
+hi NERDTreeDir ctermfg=cyan  guifg=cyan  gui=bold term=bold
 
 "Not change terminal color (background)
-hi Normal ctermbg=NONE
-hi clear LineNr
-hi clear CursorLineNr
-hi LineNr ctermfg=darkgray
-hi CursorLineNr ctermfg=yellow 
+hi Normal ctermbg=NONE  guibg=NONE
+"hi clear LineNr
+hi LineNr ctermbg=none  ctermfg=gray guifg=gray
+
+"hi clear CursorLineNr
+"hi CursorLineNr
+hi CursorLineNr ctermfg=yellow guifg=yellow 
 
 " Mode visual color
-hi clear Visual
-hi Visual ctermbg=darkgray
+"hi Visual cterm=reverse
+"hi CursorLine gui=underline cterm=underline
