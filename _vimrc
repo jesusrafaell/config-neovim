@@ -1,8 +1,7 @@
-
 "NeoVim
 syntax on
-" how number for line
-set number relativenumber
+set number
+set relativenumber
 set clipboard=unnamed
 set mouse=a
 set showmatch " Muestra la pareja de [] {} y ()
@@ -13,7 +12,6 @@ set showcmd
 set ruler
 set cursorline
 set sw =2
-"set ts=4
 set signcolumn=no
 set pumheight=20 "height for snippets
 
@@ -35,14 +33,24 @@ autocmd GUIEnter * set visualbell t_vb=
 set laststatus=2
 set noshowmode
 
+"config plugs
+set hidden
+set cmdheight=1
+set shortmess+=c
+set expandtab
+
+" fugitive always vertical diffing
+set diffopt+=vertical
+
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
 
 " theme
 Plug 'morhetz/gruvbox'
-Plug 'crusoexia/vim-monokai'
 Plug 'joshdick/onedark.vim'
 Plug 'altercation/vim-colors-solarized'
+
+"Plug 'ryanoasis/vim-devicons'
 " status bar
 Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim/'
@@ -68,9 +76,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
 Plug 'tpope/vim-surround'
-
-Plug 'mattn/emmet-vim'
 Plug 'ervandew/supertab'
+Plug 'mattn/emmet-vim'
 
 " ide
 Plug 'editorconfig/editorconfig-vim'
@@ -79,8 +86,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'easymotion/vim-easymotion'
 Plug 'yggdroot/indentline'
-Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'scrooloose/nerdcommenter'
+Plug 'gko/vim-coloresque'
 
 "git 
 Plug 'tpope/vim-fugitive'
@@ -88,29 +95,15 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 
 " prettier
-"Plug 'junegunn/vim-easy-align'
 "Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 "let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-
 call plug#end()
 
 " config theme
-"colorscheme monokai
 set t_Co=256
 set termguicolors
 colorscheme onedark
-"set background=dark
-"colorscheme solarized
-
-"config plugs
-set hidden
-set cmdheight=1
-set shortmess+=c
-set expandtab
-
-" fugitive always vertical diffing
-set diffopt+=vertical
 
 " Keymaps /////////////////
 
@@ -152,8 +145,6 @@ nnoremap <silent> <leader>n :nohlsearch<CR>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 
-"inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<C-g>u\<TAB>"
-
 "SuperTab navigation up to down
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
@@ -163,8 +154,8 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeMapActivateNode = '<space>'
-"let NERDTreeShowLineNumbers=1
 let g:NERDTreeMapOpenInTab = 'o'
+"let NERDTreeShowLineNumbers=1
 
 let g:javascript_plugin_flow = 1
 
@@ -191,39 +182,33 @@ let g:closetag_filenames = '*.html,*.js,*.jsx,*.ts,*.tsx'
 
 "vim fugitive
 let $FZF_DEFAULT_OPTS='--layout=reverse'
-
 " lightline
 let g:lightline = { 
-	  \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [], ['relativepath', 'modified']],
-      \   'right': [ ['filetype', 'percent', 'lineinfo'], ['gitbranch']]
-      \ }, 
-	  \ 'component_function': {
-      \   'filename': 'LightlineFilename',
-	  \ }
-	  \}
+  \ 'colorscheme': 'solarized',
+	\ 'active': {
+    \   'left': [ [ 'mode', 'paste' ], [], ['relativepath', 'modified']],
+    \   'right': [ ['filetype', 'percent', 'lineinfo'], ['gitbranch']]
+    \ }, 
+	\ 'component_function': {
+    \   'filename': 'LightlineFilename',
+	\ }
+\}
 
 " emgergent windows
 hi Pmenu ctermfg=gray 
-hi PmenuSel ctermfg=blue ctermbg=white
-
-"indentline
-let g:indent_guides_enable_on_vim_startup=1
-"hi IndentGuidesEven ctermbg=238 guibg=238
-"hi IndentGuidesOdd ctermbg=236 guibg=236
+hi PmenuSel ctermfg=blue ctermbg=white guibg=blue guifg=white
 
 " nerdtree color
-hi NERDTreeDir ctermfg=cyan  guifg=cyan  gui=bold term=bold
+"hi NERDTreeDir ctermfg=cyan  guifg=cyan gui=bold term=bold 
 
 "Not change terminal color (background)
 hi Normal ctermbg=NONE  guibg=NONE
-"hi clear LineNr
 hi LineNr ctermbg=none  ctermfg=gray guifg=gray
 
-"hi clear CursorLineNr
-"hi CursorLineNr
 hi CursorLineNr ctermfg=yellow guifg=yellow 
+
+"hi clear CursorLine
+"hi CursorLine gui=underline cterm=underline
 
 " Mode visual color
 "hi Visual cterm=reverse
-"hi CursorLine gui=underline cterm=underline
